@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import requests
 
@@ -5,7 +6,7 @@ st.set_page_config(page_title="Gezi Rehberi", page_icon="🌍")
 
 st.title("🌍 Gezi Rehberi")
 
-STRAPI_URL = "http://localhost:1337"
+STRAPI_URL = os.getenv("STRAPI_URL", "http://localhost:1337")
 
 cities_response = requests.get(f"{STRAPI_URL}/api/cities")
 cities = cities_response.json()["data"]
@@ -13,7 +14,6 @@ cities = cities_response.json()["data"]
 city_names = [city["name"] for city in cities]
 
 selected_city = st.selectbox("Şehir Seç", city_names)
-
 st.subheader(f"{selected_city} Mekanları")
 
 places_response = requests.get(f"{STRAPI_URL}/api/places?populate=*")
